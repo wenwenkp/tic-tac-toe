@@ -1,11 +1,12 @@
-/*----- constants -----*/ 
-const COLORS = {
+/*----- constants --------------------------*/ 
+const COLORS = {     
     null : 'white',
-    '1': 'purple',
-    '-1': 'lime',
+    '1': 'Lightcoral',
+    '-1': 'Lightgreen',
 };
-const winArray = [  //an array of the index number  
-    [0, 1, 2],      //to locate the board element value
+//winning pattern
+const winArray = [
+    [0, 1, 2],      
     [3, 4, 5],
     [6, 7, 8],
     [0, 3, 6],
@@ -14,31 +15,31 @@ const winArray = [  //an array of the index number
     [0, 4, 8],
     [2, 4, 6],
 ];
-// assign the total number of ways to win
+//total number of ways to win
 const totalRow = winArray.length;
 
-/*----- app's state (variables) -----*/ 
-let board;
-let turn; // winner, tie, game in play
-let winner;
-let count;
+/*----- app's state (variables) ----------*/ 
+let board;  //game board
+let turn;   //to indicate player1 :1, player2 :-1, and winner : null
+let count;  //to count the total steps
+let cell;   //to id the cell position in the game board
+let msg;    //msg zone
 
-/*----- cached element references -----*/ 
+/*----- cached element references -------*/ 
 
-
-/*----- event listeners -----*/ 
+/*----- event listeners -----------------*/ 
 //click the square
 document.querySelector('section.board')
     .addEventListener('click', handleclick);
-//click reset
+//click to replay
 document.querySelector('#reset-button')
     .addEventListener('click', reset);
 
-/*----- functions -----*/
+/*----- functions -----------------------*/
 //call init to initial the board
 init();
 
-//function to intial the board
+//function to intial the board and variables
 function init() {
     board = [
         null, null, null,  //row 1 (index 0)
@@ -47,74 +48,77 @@ function init() {
     ];
     turn = 1;
     count = 0;
-    winner = null;
-    document.querySelector('section.board').style.backgroundColor = COLORS[winner];
-}
-function render() {
-
-    //count it once been clicked successfully
-    count++;
-    console.log(count);
-
-    //loop each rows to check if the value are the same,
-    //using the winArray as the index number to locate the cell
-    //only check winner if there is more than 4 steps
-    //exit once winner found
-    //if last step (9 counts) made and still no winner then exit
-    if(count > 4) {
-        checkWinner(board, winner);
+    msg = document.getElementById(`msg`);
+    msg.style.color = COLORS[null];
+    //change cell color to white
+    for(let i = 0; i < board.length; i++) {
+        document.getElementById(`cell${i}`).style.backgroundColor = COLORS[null];
     };
-    //if((count === 9) && (winner === null)) {
-     //   console.log('tie!!');
-       // return;
-    //};
 }
-
+//function to handle the click to the cell
 function handleclick(evt) {
-    //get cell and its index in board
-    let cell = parseInt(evt.target.id.replace('cell', ''));
-    
-    //if cell is not a number which means not been click correctly,
-    //exit and wait for another click (same player, nothing been changed yet)
+    //discontinue if winner found
+    if(turn === null) return;
+    //discontinue after 9 steps
+    if(count === 9){
+        return;
+    };
+    //get cell index#
+    cell = parseInt(evt.target.id.replace('cell', ''));
+    //discontinue if not a cell been clicked
     if(isNaN(cell)) return;
-
-    //if not a empty cell been clicked,
-    //exit and wait for another click (same plaeyer, nothing been changed yet)
+    //discontinue if not an empty cell been clicked
     if(board[cell] !== null) return;
-
-    //if has winner then exit
-    if(winner !== null) return;
-
-    //assign the player key to the cell,
-    //mark the cell with the key
-    board[cell] = turn;
-
-    //change the cell color per the key to access into the value(which is the color)
-    evt.target.style.backgroundColor = COLORS[turn];
-
-    //call render to update
+    //call render to update data
     render();
-
-    //change player
+}
+//function to update data
+function render() {
+    //count once if click successfully
+    count++;
+    //assign player's number to the cell
+    board[cell] = turn;
+    //change cell color per player
+    document.getElementById(`cell${cell}`).style.backgroundColor = COLORS[turn];
+    //start to check winner after 4 steps
+    if(count > 4) {
+        //if winner found then discontinue
+        if(checkWinner(board)){
+            return;
+        }
+    };
+    //once last step is made and no winner then display message
+    if(count === 9){
+        msg.style.color = 'black';
+        msg.textContent = 'TIE';
+        return;
+    };
+    //switch player
     turn = turn * -1;
+    //display message for each player
+    msg.style.color = COLORS[turn];
+    msg.textContent = `Now : ${COLORS[turn]}'s Turn!!`;
 }
-function reset(evt) {
-    init();
-    console.log(`reset + ${turn} + ${winner} + ${board}`);
-}
-
-function checkWinner(board, winner) {
+//function to check if there is a winner
+function checkWinner(board) {
+    //loop each array in winning pattern
     for(let row = 0; row < totalRow; row++){
-        //if value are the same then winner
+        //if 3 consisten same value been found in the board, winner found
         if(
             (board[winArray[row][0]] !== null) &&
             (board[winArray[row][0]] === board[winArray[row][1]]) &&
             (board[winArray[row][1]] === board[winArray[row][2]])
-        ){
-        console.log('winner!!!!');
-        winner = board[winArray[row][0]];
-        return true;
-        }
+        )
+        {
+        //display winner and no more steps, switch to null
+        msg.textContent = `${COLORS[turn]} Winner!!! Congratulations!!!`;
+        turn = null;
+        return true;        
+        };
     }
 }
-
+//function to replay
+function reset(evt) {
+    //call init function to reset data
+    init();
+}

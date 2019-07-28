@@ -9,8 +9,20 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    font-family: 'Lemon', cursive;
 }
-
+h1 {
+    font-size: 70px;
+}
+#tic {
+    color: lightcoral;
+}
+#tac {
+    color: lightgreen;
+}
+#toe {
+    color: lightblue;
+}
 section.board {
     display: grid;
     grid-template-columns: repeat(3, 15vmin);
@@ -19,11 +31,13 @@ section.board {
 
 }
 section.board div {
-    border: 10px solid grey;
+    border: 10px solid;
+    border-color: grey;
 }
 
 #reset-button {
     margin-top: 50px;
     font-size: 35px;
-    border-radius: 25%;
+    border-radius: 30%;
+    padding: 20px;
 }
