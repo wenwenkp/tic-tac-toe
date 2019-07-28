@@ -6,13 +6,57 @@ body {
     height: 100vh;
     margin:0;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
-    align-items: center;
+    align-items: center; 
     font-family: 'Lemon', cursive;
 }
-h1 {
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; 
+
+}
+#x, #o {
+    margin: 0 auto;
     font-size: 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; 
+    padding-top: 200px;
+}
+#x {
+    color: lightcoral;
+
+}
+#o {
+    color: lightgreen;
+
+}
+#x-turn, #o-turn {
+    color: lightblue;
+    text-align: center;
+}
+#x-board, #o-board {
+    display: grid;
+    grid-template-columns: repeat(3, 5vmin);
+    grid-template-rows: repeat(3, 5vmin);
+    padding-top: 50px;
+
+}
+#x-board div, #o-board div{
+    border: 3px solid black;
+    font-size: 30px;
+    text-align: center;
+}
+
+
+
+h1 {
+    font-size: 50px;
+    margin-bottom: 100px;
 }
 #tic {
     color: lightcoral;
@@ -23,16 +67,17 @@ h1 {
 #toe {
     color: lightblue;
 }
+h2 {
+    font-size: 40px;
+}
 section.board {
     display: grid;
     grid-template-columns: repeat(3, 15vmin);
     grid-template-rows: repeat(3, 15vmin);
     grid-gap: 10px;
-
 }
 section.board div {
-    border: 10px solid;
-    border-color: grey;
+    border: 10px solid grey;
 }
 
 #reset-button {
@@ -40,4 +85,5 @@ section.board div {
     font-size: 35px;
     border-radius: 30%;
     padding: 20px;
+    border: 5px solid black;
 }
