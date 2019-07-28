@@ -47,7 +47,7 @@ main {
 
 }
 #x-board div, #o-board div{
-    border: 3px solid black;
+    border: 3px solid rgb(124, 123, 126);
     font-size: 30px;
     text-align: center;
 }
