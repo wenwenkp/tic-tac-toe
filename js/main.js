@@ -111,7 +111,6 @@ function render() {
     };
     turn = turn * -1;
     visibility();
-    
 }
 //function to check if there is a winner
     //loop each array in winning pattern
